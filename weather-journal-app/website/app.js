@@ -1,12 +1,11 @@
-// Creating a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.toDateString();
 
-// The URL to retrieve weather information from his API (country : US)
+let b = new Date();
+let newDa = b.toDateString();
+
+// The URL to retrieve weather information
 const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 
-// // Personal API Key for OpenWeatherMap API
-// &units=metric to get the Celsius Temperature
+
 const apiKey = ",&appid=19fe31f233fc613837bc4ab7ad4a32c3=metric";
 
 // the URL of the server to post data
@@ -14,19 +13,12 @@ const server = "http://127.0.0.1:4000";
 
 // showing the error to the user
 const error = document.getElementById("error");
-/**
- * // generateData //
- * function to get input values
- * call getWeatherData to fetch the data from API
- * create object from API object by using destructuring
- * post the data in the server
- * get the data to update UI
- */
 
-const generateData = () => { 
+
+const genData = () => { 
   //get value after click on the button
   const zip = document.getElementById("zip").value;
-  const feelings = document.getElementById("feelings").value;
+  const feel = document.getElementById("feel").value;
 
   // getWeatherData return promise
   getWeatherData(zip).then((data) => {
@@ -39,11 +31,11 @@ const generateData = () => {
       } = data;
 
       const info = {
-        newDate,
+        newDa,
         city,
         temp: Math.round(temp), // to get integer number
         description,
-        feelings,
+        feel,
       };
 
       postData(server + "/add", info);
@@ -54,12 +46,11 @@ const generateData = () => {
   });
 };
 
-// Event listener to add function to existing HTML DOM element
-// Function called by event listener
+
 document.getElementById("generate").addEventListener("click", generateData);
 
-//Function to GET Web API Data
-const getWeatherData = async (zip) => {
+// GET Web API Data
+const getWeather = async (zip) => {
   try {
     const res = await fetch(baseURL + zip + apiKey);
     const data = await res.json();
@@ -88,26 +79,26 @@ const postData = async (url = "", info = {}) => {
   });
 
   try {
-    const newData = await res.json();
-    console.log(`You just saved`, newData);
-    return newData;
+    const   newDa = await res.json();
+    console.log(`You just saved`,  newDa);
+    return   newDa;
   } catch (error) {
     console.log(error);
   }
 };
 
-//Function to GET Project Data
-// and updating UI by this data
+//Function to GET  Data
+
 const updatingUI = async () => {
   const res = await fetch(server + "/all");
   try {
     const savedData = await res.json();
 
-    document.getElementById("date").innerHTML = savedData.newDate;
+    document.getElementById("date").innerHTML = savedData.newDa;
     document.getElementById("city").innerHTML = savedData.city;
     document.getElementById("temp").innerHTML = savedData.temp + '&degC';
     document.getElementById("description").innerHTML = savedData.description;
-    document.getElementById("content").innerHTML = savedData.feelings;
+    document.getElementById("content").innerHTML = savedData.feel;
   } catch (error) {
     console.log(error);
   }
