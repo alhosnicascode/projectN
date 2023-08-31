@@ -2,7 +2,6 @@
 let b = new Date();
 let newDa = b.toDateString();
 
-// The URL to retrieve weather information
 const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 
 
@@ -11,30 +10,30 @@ const apiKey = ",&appid=19fe31f233fc613837bc4ab7ad4a32c3=metric";
 // the URL of the server to post data
 const server = "http://127.0.0.1:4000";
 
-// showing the error to the user
-const error = document.getElementById("error");
 
 
 const genData = () => { 
-  //get value after click on the button
-  const zip = document.getElementById("zip").value;
+  const mis = document.getElementById("mis");
   const feel = document.getElementById("feel").value;
+  const p = document.getElementById("p").value;
+ 
+//  error 
 
-  // getWeatherData return promise
-  getWeatherData(zip).then((data) => {
-    //making sure from the received data to execute rest of the steps
+
+  getWeatherData(p).then((data) => {
+ 
     if (data) {
       const {
         main: { temp },
         name: city,
-        weather: [{ description }],
+        weather: [{ descrip }],
       } = data;
 
       const info = {
         newDa,
         city,
-        temp: Math.round(temp), // to get integer number
-        description,
+        temp: Math.round(temp), 
+        descrip,
         feel,
       };
 
@@ -50,21 +49,21 @@ const genData = () => {
 document.getElementById("generate").addEventListener("click", generateData);
 
 // GET Web API Data
-const getWeather = async (zip) => {
+const getWeather = async (p) => {
   try {
-    const res = await fetch(baseURL + zip + apiKey);
+    const res = await fetch(baseURL + p + apiKey);
     const data = await res.json();
 
     if (data.cod != 200) {
-      // display the error message on UI
-      error.innerHTML = data.message;
-      setTimeout(_=> error.innerHTML = '', 2000)
+    
+      mis.innerHTML = data.message;
+      setTimeout(_=> mis.innerHTML = '', 2000)
       throw `${data.message}`;
     }
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (mis) {
+    console.log(mis);
   }
 };
 
@@ -82,8 +81,8 @@ const postData = async (url = "", info = {}) => {
     const   newDa = await res.json();
     console.log(`You just saved`,  newDa);
     return   newDa;
-  } catch (error) {
-    console.log(error);
+  } catch (mis) {
+    console.log(mis);
   }
 };
 
@@ -97,9 +96,9 @@ const updatingUI = async () => {
     document.getElementById("date").innerHTML = savedData.newDa;
     document.getElementById("city").innerHTML = savedData.city;
     document.getElementById("temp").innerHTML = savedData.temp + '&degC';
-    document.getElementById("description").innerHTML = savedData.description;
+    document.getElementById("descrip").innerHTML = savedData.descrip;
     document.getElementById("content").innerHTML = savedData.feel;
-  } catch (error) {
-    console.log(error);
+  } catch (mis) {
+    console.log(mis);
   }
 };
